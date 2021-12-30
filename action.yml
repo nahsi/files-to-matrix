@@ -1,0 +1,12 @@
+name: "Files to matrix"
+description: "Generate github action build matrix from a list of files"
+author: "Anatoly Laskaris"
+
+inputs:
+  testInput:
+    description: "testing"
+    required: true
+
+runs:
+  using: "node16"
+  main: "index.js"
