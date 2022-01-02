@@ -1,9 +1,10 @@
 import * as core from 'https://jspm.dev/@actions/core@1.6.0';
 
-const myInput = core.getInput('testInput', {required: true});
+const testInput = core.getInput('testInput');
 
 async function run() {
-  console.log(myInput)
+  core.warning('Hello')
+  core.debug('${testInput}')
 }
 
 run();
