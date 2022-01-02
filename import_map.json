@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@actions/core": "https://cdn.skypack.dev/@actions/core",
+    "@actions/github": "https://cdn.skypack.dev/@actions/github"
+  }
+}

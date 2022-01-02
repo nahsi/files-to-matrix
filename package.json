@@ -1,0 +1,30 @@
+{
+  "name": "files-to-matrix",
+  "version": "1.0.0",
+  "description": "Generate github action build matrix from a list of files",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc && ncc build",
+    "format": "deno fmt src/*.ts README.md",
+    "lint": "deno lint/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nahsi/files-to-matrix.git"
+  },
+  "author": "Anatoly Laskaris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nahsi/files-to-matrix/issues"
+  },
+  "homepage": "https://github.com/nahsi/files-to-matrix#readme",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.6",
+    "@vercel/ncc": "^0.33.1",
+    "typescript": "^4.5.4"
+  }
+}
