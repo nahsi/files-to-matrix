@@ -9,4 +9,4 @@ inputs:
 
 runs:
   using: "docker"
-  main: "Dockerfile"
+  image: "Dockerfile"
