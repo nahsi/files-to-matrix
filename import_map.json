@@ -1,6 +1,6 @@
 {
   "imports": {
-    "@actions/core": "https://cdn.skypack.dev/@actions/core",
-    "@actions/github": "https://cdn.skypack.dev/@actions/github"
+    "@actions/core": "https://jspm.dev/@actions/core",
+    "path": "https://deno.land/std/node/path.ts"
   }
 }

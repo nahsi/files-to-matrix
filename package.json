@@ -4,9 +4,11 @@
   "description": "Generate github action build matrix from a list of files",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc && ncc build",
     "format": "deno fmt src/*.ts README.md",
-    "lint": "deno lint/*.ts"
+    "lint": "deno lint/*.ts",
+    "test": "jest",
+    "build": "tsc && ncc build",
+    "action": "npm run build && act pull_request"
   },
   "repository": {
     "type": "git",
@@ -19,12 +21,14 @@
   },
   "homepage": "https://github.com/nahsi/files-to-matrix#readme",
   "dependencies": {
-    "@actions/core": "^1.6.0",
-    "@actions/github": "^5.0.0"
+    "@actions/core": "^1.6.0"
   },
   "devDependencies": {
+    "@types/jest": "^27.4.0",
     "@types/node": "^17.0.6",
     "@vercel/ncc": "^0.33.1",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
   }
 }

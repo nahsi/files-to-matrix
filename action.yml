@@ -3,8 +3,11 @@ description: "Generate github action build matrix from a list of files"
 author: "Anatoly Laskaris"
 
 inputs:
-  testInput:
-    description: "testing"
+  files:
+    description: "List of files to convert to matrix"
+    required: true
+  map:
+    description: "Map of names to path levels"
     required: true
 
 runs:

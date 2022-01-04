@@ -35,15 +35,74 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.normalizePath = exports.trimExtention = exports.parseJson = void 0;
 const core = __importStar(__nccwpck_require__(186));
-const testInput = core.getInput('testInput');
-function run() {
+const path_1 = __nccwpck_require__(17);
+function parseJson(str) {
+    try {
+        return JSON.parse(str);
+    }
+    catch (err) {
+        core.setFailed(String(err));
+    }
+}
+exports.parseJson = parseJson;
+function trimExtention(str) {
+    return str.split(".").shift() || str;
+}
+exports.trimExtention = trimExtention;
+function normalizePath(p) {
+    const withoutDot = (s) => s !== ".";
+    const withoutEmpty = (s) => s.length > 0;
+    return p.filter(withoutDot).filter(withoutEmpty);
+}
+exports.normalizePath = normalizePath;
+function generateMatrix(map, paths) {
+    let matrix;
+    matrix = [];
+    if (Array.isArray(paths)) {
+        // loop over each path in "paths" input
+        paths.forEach((path) => {
+            let matrixElement;
+            matrixElement = {};
+            // loop over path's "levels", i.e. "some" and "path" in "some/path"
+            // where "some" is 0 level deep and "path" is 1 level deep
+            (0, path_1.normalize)(path).split('/').forEach((level, depth) => {
+                // find settings for current level in "map" input
+                // first found setting is used
+                let setting = map.find((e) => e.level == depth);
+                if (setting && level) {
+                    // if no "name" set let name be current depth
+                    let name = (setting === null || setting === void 0 ? void 0 : setting.name) || String(depth);
+                    let trim = (setting === null || setting === void 0 ? void 0 : setting.trim) || null;
+                    if (trim) {
+                        level = trimExtention(level);
+                    }
+                    matrixElement[name] = level;
+                }
+            });
+            matrix.push(matrixElement);
+        });
+    }
+    return matrix;
+}
+function run(configuration) {
     return __awaiter(this, void 0, void 0, function* () {
-        core.warning(`Hello`);
-        core.warning(`${testInput}`);
+        const settings = Object.assign({}, configuration);
+        const inputMap = parseJson(settings.map);
+        core.debug(JSON.stringify(inputMap));
+        const inputPaths = settings.paths.split(" ");
+        core.debug(String(inputPaths));
+        const matrix = generateMatrix(inputMap, inputPaths);
+        core.notice(JSON.stringify(matrix));
+        core.setOutput("matrix", JSON.stringify(matrix));
     });
 }
-run();
+const action = {
+    map: core.getInput("map"),
+    paths: core.getInput("paths"),
+};
+run(action);
 
 
 /***/ }),
