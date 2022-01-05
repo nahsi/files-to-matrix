@@ -23,11 +23,11 @@ function parseJson(input: string) {
 export function pathToLevels(path: string) {
   const withoutDot = (s: string) => s !== ".";
   const withoutEmpty = (s: string) => s.length > 0;
-  
+
   return normalize(path)
-    .split('/')
+    .split("/")
     .filter(withoutDot)
-    .filter(withoutEmpty)
+    .filter(withoutEmpty);
 }
 
 function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
@@ -58,7 +58,12 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
           matrixElement[name] = level;
         }
       });
-      matrix.push(matrixElement);
+      let exists = matrix.find((e) =>
+        JSON.stringify(e) == JSON.stringify(matrixElement)
+      );
+      if (!exists) {
+        matrix.push(matrixElement);
+      }
     });
   }
   return matrix;
