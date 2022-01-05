@@ -12,24 +12,17 @@ export interface LevelMapInterface extends Array<any> {
   trim: boolean;
 }
 
-export function parseJson(str: string) {
+const parseJson = (input: string) => {
   try {
-    return JSON.parse(str);
+    return JSON.parse(input);
   } catch (err) {
     core.setFailed(String(err));
   }
 }
 
-export function trimExtention(str: string) {
-  return str.split(".").shift() || str;
-}
-
-export function normalizePath(p: Array<string>) {
-  const withoutDot = (s: string) => s !== ".";
-  const withoutEmpty = (s: string) => s.length > 0;
-
-  return p.filter(withoutDot).filter(withoutEmpty)
-}
+const trimExtention = (s: string) => s.split(".").shift() || s;
+const withoutDot = (s: string) => s !== ".";
+const withoutEmpty = (s: string) => s.length > 0;
 
 function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
   let matrix: Array<{ [key: string]: string }>;
