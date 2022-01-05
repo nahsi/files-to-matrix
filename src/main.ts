@@ -59,6 +59,8 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
         }
       });
       let exists = matrix.find((e) =>
+        // javascript objects are are always unique
+        // so we convert objects to strings to compare
         JSON.stringify(e) == JSON.stringify(matrixElement)
       );
       if (!exists) {
