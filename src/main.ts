@@ -1,18 +1,18 @@
 import * as core from "@actions/core";
 import { normalize } from "path";
 
-export interface ActionInterface {
+interface ActionInterface {
   map: string;
   paths: string;
 }
 
-export interface LevelMapInterface extends Array<any> {
+interface LevelMapInterface extends Array<any> {
   name: string;
   level: number;
   trim: boolean;
 }
 
-const parseJson = (input: string) => {
+function parseJson (input: string) {
   try {
     return JSON.parse(input);
   } catch (err) {
@@ -20,11 +20,19 @@ const parseJson = (input: string) => {
   }
 }
 
-const trimExtention = (s: string) => s.split(".").shift() || s;
-const withoutDot = (s: string) => s !== ".";
-const withoutEmpty = (s: string) => s.length > 0;
+export function normalizePath(path: string) {
+  const withoutDot = (s: string) => s !== ".";
+  const withoutEmpty = (s: string) => s.length > 0;
+  
+  return normalize(path)
+    .split('/')
+    .filter(withoutDot)
+    .filter(withoutEmpty)
+}
 
 function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
+  const trimExtention = (s: string) => s.split(".").shift() || s;
+
   let matrix: Array<{ [key: string]: string }>;
   matrix = [];
 
@@ -36,7 +44,7 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
 
       // loop over path's "levels", i.e. "some" and "path" in "some/path"
       // where "some" is 0 level deep and "path" is 1 level deep
-      normalize(path).split('/').forEach((level: string, depth: number) => {
+      normalizePath(path).forEach((level: string, depth: number) => {
         // find settings for current level in "map" input
         // first found setting is used
         let setting = map.find((e) => e.level == depth);
