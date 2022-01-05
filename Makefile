@@ -6,3 +6,6 @@ cache:
 
 lint:
 	deno lint src/* tests/*
+
+fmt:
+	deno fmt src/* tests/*
