@@ -1,11 +1,11 @@
-import { normalizePath } from "../src/main";
+import { pathToLevels } from "../src/main";
 
-test("test normalizePath", () => {
+test("test pathToLevels", () => {
   const result = ["some", "path"]
 
-  const absolutePath = normalizePath("/some/path");
+  const absolutePath = pathToLevels("/some/path");
   expect(absolutePath).toStrictEqual(result);
 
-  const complexPath = normalizePath("./some/../some/path");
+  const complexPath = pathToLevels("./some/../some/path");
   expect(complexPath).toStrictEqual(result);
 });

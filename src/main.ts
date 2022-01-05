@@ -12,7 +12,7 @@ interface LevelMapInterface extends Array<any> {
   trim: boolean;
 }
 
-function parseJson (input: string) {
+function parseJson(input: string) {
   try {
     return JSON.parse(input);
   } catch (err) {
@@ -20,7 +20,7 @@ function parseJson (input: string) {
   }
 }
 
-export function normalizePath(path: string) {
+export function pathToLevels(path: string) {
   const withoutDot = (s: string) => s !== ".";
   const withoutEmpty = (s: string) => s.length > 0;
   
@@ -44,7 +44,7 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
 
       // loop over path's "levels", i.e. "some" and "path" in "some/path"
       // where "some" is 0 level deep and "path" is 1 level deep
-      normalizePath(path).forEach((level: string, depth: number) => {
+      pathToLevels(path).forEach((level: string, depth: number) => {
         // find settings for current level in "map" input
         // first found setting is used
         let setting = map.find((e) => e.level == depth);
