@@ -12,7 +12,8 @@ interface ActionInterface {
   paths: string;
 }
 
-interface LevelMapInterface extends Array<string | number | boolean> {
+// deno-lint-ignore no-explicit-any
+interface LevelMapInterface extends Array<any> {
   name: string;
   level: number;
   trim: boolean;
