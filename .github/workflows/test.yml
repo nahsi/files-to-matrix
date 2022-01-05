@@ -10,6 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
+          paths: src/* ./some/dir/metadata.yml some/dir/metadata.yml some/dir/config.json /other/path/metadata.yml
           map: |
             [
               {
@@ -26,4 +27,3 @@ jobs:
                 "level": 5
               }
             ]
-          paths: src/* ./some/dir/metadata.yml some/dir/config.json /other/path/metadata.yml

@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
-import { normalize } from "path";
+// import * as glob from "glob";
+import { normalize } from "https://deno.land/std/node/path.ts";
 
 interface ActionInterface {
   map: string;
@@ -20,6 +21,15 @@ function parseJson(input: string) {
   }
 }
 
+// export function preparePaths(rawPaths: string) {
+//   let expandedPaths: string[] = []
+//   rawPaths.split(" ").forEach((path: string) => {
+//     let files = glob.sync(path, { nonull: true })
+//     expandedPaths = [...new Set([...expandedPaths , ...files])];
+//   })
+//   return expandedPaths;
+// }
+
 export function pathToLevels(path: string) {
   const withoutDot = (s: string) => s !== ".";
   const withoutEmpty = (s: string) => s.length > 0;
@@ -33,14 +43,12 @@ export function pathToLevels(path: string) {
 function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
   const trimExtention = (s: string) => s.split(".").shift() || s;
 
-  let matrix: Array<{ [key: string]: string }>;
-  matrix = [];
+  let matrix: Array<{ [key: string]: string }> = [];
 
   if (Array.isArray(paths)) {
     // loop over each path in "paths" input
     paths.forEach((path: string) => {
-      let matrixElement: { [key: string]: string };
-      matrixElement = {};
+      let matrixElement: { [key: string]: string } = {};
 
       // loop over path's "levels", i.e. "some" and "path" in "some/path"
       // where "some" is 0 level deep and "path" is 1 level deep
@@ -79,7 +87,8 @@ async function run(
   const inputMap: LevelMapInterface = parseJson(settings.map);
   core.debug(JSON.stringify(inputMap));
 
-  const inputPaths = settings.paths.split(" ");
+  // const inputPaths = preparePaths(settings.paths);
+  const inputPaths = settings.paths.split(" ")
   core.debug(String(inputPaths));
 
   const matrix = generateMatrix(inputMap, inputPaths);
@@ -88,8 +97,8 @@ async function run(
 }
 
 const action: ActionInterface = {
-  map: core.getInput("map"),
-  paths: core.getInput("paths"),
+  map: core.getInput("map", {required: false}),
+  paths: core.getInput("paths", {required: false}),
 };
 
 run(action);
