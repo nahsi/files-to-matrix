@@ -6,19 +6,19 @@
     "https://ga.jspm.io/": {
       "@actions/http-client": "https://ga.jspm.io/npm:@actions/http-client@1.0.11/index.js",
       "@actions/http-client/auth": "https://ga.jspm.io/npm:@actions/http-client@1.0.11/auth.js",
-      "assert": "https://deno.land/std/node/assert.ts",
-      "buffer": "https://deno.land/std/node/buffer.ts",
-      "events": "https://deno.land/std/node/events.ts",
-      "fs": "https://deno.land/std/node/fs.ts",
-      "http": "https://deno.land/std/node/http.ts",
-      "https": "https://deno.land/std/node/https.ts",
-      "net": "https://deno.land/std/node/net.ts",
-      "os": "https://deno.land/std/node/os.ts",
-      "path": "https://deno.land/std/node/path.ts",
-      "process": "https://deno.land/std/node/process.ts",
-      "tls": "https://deno.land/std/node/tls.ts",
+      "assert": "https://deno.land/std@0.120.0/node/assert.ts",
+      "buffer": "https://deno.land/std@0.120.0/node/buffer.ts",
+      "events": "https://deno.land/std@0.120.0/node/events.ts",
+      "fs": "https://deno.land/std@0.120.0/node/fs.ts",
+      "http": "https://deno.land/std@0.120.0/node/http.ts",
+      "https": "https://deno.land/std@0.120.0/node/https.ts",
+      "net": "https://deno.land/std@0.120.0/node/net.ts",
+      "os": "https://deno.land/std@0.120.0/node/os.ts",
+      "path": "https://deno.land/std@0.120.0/node/path.ts",
+      "process": "https://deno.land/std@0.120.0/node/process.ts",
+      "tls": "https://deno.land/std@0.120.0/node/tls.ts",
       "tunnel": "https://ga.jspm.io/npm:tunnel@0.0.6/index.js",
-      "util": "https://deno.land/std/node/util.ts"
+      "util": "https://deno.land/std@0.120.0/node/util.ts"
     }
   }
 }

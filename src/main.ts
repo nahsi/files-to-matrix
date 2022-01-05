@@ -1,6 +1,11 @@
 import * as core from "@actions/core";
-// import * as glob from "glob";
-import { normalize } from "https://deno.land/std/node/path.ts";
+
+import { walkSync } from "https://deno.land/std@0.120.0/fs/mod.ts";
+import { normalize } from "https://deno.land/std@0.120.0/path/mod.ts";
+import {
+  globToRegExp,
+  isGlob,
+} from "https://deno.land/std@0.120.0/path/glob.ts";
 
 interface ActionInterface {
   map: string;
@@ -21,14 +26,20 @@ function parseJson(input: string) {
   }
 }
 
-// export function preparePaths(rawPaths: string) {
-//   let expandedPaths: string[] = []
-//   rawPaths.split(" ").forEach((path: string) => {
-//     let files = glob.sync(path, { nonull: true })
-//     expandedPaths = [...new Set([...expandedPaths , ...files])];
-//   })
-//   return expandedPaths;
-// }
+export function preparePaths(rawPaths: string) {
+  let expandedPaths: string[] = [];
+  rawPaths.split(" ").forEach((path: string) => {
+    if (isGlob(path)) {
+      let regexp = globToRegExp(path, { extended: true, globstar: true });
+      for (const file of walkSync(".", { match: [regexp] })) {
+        expandedPaths.push(file.path);
+      }
+    } else {
+      expandedPaths.push(path);
+    }
+  });
+  return [...new Set([...expandedPaths])];
+}
 
 export function pathToLevels(path: string) {
   const withoutDot = (s: string) => s !== ".";
@@ -87,8 +98,7 @@ async function run(
   const inputMap: LevelMapInterface = parseJson(settings.map);
   core.debug(JSON.stringify(inputMap));
 
-  // const inputPaths = preparePaths(settings.paths);
-  const inputPaths = settings.paths.split(" ")
+  const inputPaths = preparePaths(settings.paths);
   core.debug(String(inputPaths));
 
   const matrix = generateMatrix(inputMap, inputPaths);
@@ -97,8 +107,8 @@ async function run(
 }
 
 const action: ActionInterface = {
-  map: core.getInput("map", {required: false}),
-  paths: core.getInput("paths", {required: false}),
+  map: core.getInput("map", { required: false }),
+  paths: core.getInput("paths", { required: false }),
 };
 
 run(action);
