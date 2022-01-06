@@ -26,7 +26,7 @@ runs:
       with:
         path: "~/.deno"
         key: "${{ runner.os }}-deno-${{ hashFiles('import_map.json') }}"
-        restore-leys: |
+        restore-keys: |
           ${{ runner.os }}-deno-${{ hashFiles('import_map.json') }}
           ${{ runner.os }}-deno-
 
