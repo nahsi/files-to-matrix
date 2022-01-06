@@ -37,5 +37,5 @@ runs:
         INPUT_MAP: ${{ inputs.map }}
       run: |
         deno run --quiet --unstable --import-map import_map.json \
-          --allow-env --allow-read --allow-all \
+          --allow-env --allow-read \
           main.ts

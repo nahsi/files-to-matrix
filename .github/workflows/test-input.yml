@@ -1,4 +1,4 @@
-name: test workflow
+name: Run with test-data 
 
 on:
   pull_request:
@@ -13,8 +13,7 @@ jobs:
           files: >
             src/*
             .github/**
-            ./some/dir/metadata.yml
-            some/dir/metadata.yml
+            ./some/dir/metadata.yml some/dir/metadata.yml
             some/dir/config.json
             /other/path/metadata.yml
           map: |
