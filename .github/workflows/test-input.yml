@@ -1,0 +1,40 @@
+name: Run with test-data 
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: "${{ matrix.os }}"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          files: >-
+            src/*
+            .github/**
+            ./some/dir/metadata.yml some/dir/metadata.yml
+            some/dir/config.json
+            /other/path/metadata.yml
+          settings: >-
+            [
+              {
+                "name": "foo",
+                "level": 0,
+                "trim": true
+              },
+              {
+                "level": 2,
+                "trim": true
+              },
+              {
+                "name": "heh",
+                "level": 5
+              }
+            ]

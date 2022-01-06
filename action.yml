@@ -1,0 +1,36 @@
+name: "Files to matrix"
+description: "Generate a build matrix from files/globs"
+author: "Anatoly Laskaris"
+branding:
+  icon: "file-plus"
+  color: "white"
+
+inputs:
+  files:
+    description: "List of files/paths/globs"
+    required: true
+  settings:
+    description: "Settings for "
+    required: true
+outputs:
+  matrix:
+    description: "Generated array to use with matrix"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Setup deno"
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+
+    - name: "Run action with deno"
+      shell: bash
+      env:
+        INPUT_FILES: ${{ inputs.files }}
+        INPUT_SETTINGS: ${{ inputs.settings }}
+      run: |
+        deno run --quiet --unstable \
+          --import-map $GITHUB_ACTION_PATH/import_map.json \
+          --allow-env --allow-read \
+          $GITHUB_ACTION_PATH/main.ts
