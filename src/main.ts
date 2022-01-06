@@ -6,7 +6,7 @@ import { globToRegExp, isGlob } from "glob";
 
 interface ActionInterface {
   map: string;
-  paths: string;
+  files: string;
 }
 
 // deno-lint-ignore no-explicit-any
@@ -96,17 +96,17 @@ function run(
   const inputMap: LevelMapInterface = parseJson(settings.map);
   core.debug(JSON.stringify(inputMap));
 
-  const inputPaths = preparePaths(settings.paths);
-  core.debug(String(inputPaths));
+  const inputFiles = preparePaths(settings.files);
+  core.debug(String(inputFiles));
 
-  const matrix = generateMatrix(inputMap, inputPaths);
+  const matrix = generateMatrix(inputMap, inputFiles);
   core.notice(JSON.stringify(matrix));
   core.setOutput("matrix", JSON.stringify(matrix));
 }
 
 const action: ActionInterface = {
   map: core.getInput("map", { required: false }),
-  paths: core.getInput("paths", { required: false }),
+  files: core.getInput("files", { required: false }),
 };
 
 run(action);

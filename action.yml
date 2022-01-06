@@ -9,7 +9,33 @@ inputs:
   map:
     description: "Map of names to path levels"
     required: true
+outputs:
+  matrix:
+    description: "Matrix generated from files"
 
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "composite"
+  steps:
+    - name: "Setup deno"
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+
+    - name: "Setup cache action"
+      uses: actions/cache@v2
+      with:
+        path: "~/.deno"
+        key: "${{ runner.os }}-deno-${{ hashFiles('import_map.json') }}"
+        restore-leys: |
+          ${{ runner.os }}-deno-${{ hashFiles('import_map.json') }}
+          ${{ runner.os }}-deno-
+
+    - name: "Run action with deno"
+      shell: bash
+      env:
+        INPUT_FILES: ${{ inputs.files }}
+        INPUT_MAP: ${{ inputs.map }}
+      run: |
+        deno run --quiet --unstable --import-map import_map.json \
+          --allow-env --allow-read --allow-all \
+          src/main.ts
