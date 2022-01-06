@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 
 import { walkSync } from "fs";
-import { normalize } from "path";
+import { normalize, sep } from "path";
 import { globToRegExp, isGlob } from "glob";
 
 export interface ActionInterface {
@@ -45,7 +45,7 @@ export function pathToLevels(path: string) {
   const withoutEmpty = (s: string) => s.length > 0;
 
   const normalizedPath = normalize(path)
-    .split("/")
+    .split(sep)
     .filter(withoutDot)
     .filter(withoutEmpty);
   core.debug(`levels: ${path} -> ${normalizedPath}`)
