@@ -16,7 +16,7 @@ jobs:
             ./some/dir/metadata.yml some/dir/metadata.yml
             some/dir/config.json
             /other/path/metadata.yml
-          map: >-
+          settings: >-
             [
               {
                 "name": "foo",
