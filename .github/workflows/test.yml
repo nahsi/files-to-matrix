@@ -12,6 +12,7 @@ jobs:
         with:
           files: >
             src/*
+            .github/**
             ./some/dir/metadata.yml
             some/dir/metadata.yml
             some/dir/config.json

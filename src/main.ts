@@ -105,8 +105,8 @@ function run(
 }
 
 const action: ActionInterface = {
-  map: core.getInput("map", { required: false }),
-  files: core.getInput("files", { required: false }),
+  map: core.getInput("map", { required: true }),
+  files: core.getInput("files", { required: true }),
 };
 
 run(action);
