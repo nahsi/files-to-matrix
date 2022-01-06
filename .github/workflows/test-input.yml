@@ -5,10 +5,11 @@ on:
 
 jobs:
   strategy:
-    os:
-      - ubuntu-latest
-      - windows-latest
-      - macos-latest
+    matrix:
+      os:
+        - ubuntu-latest
+        - windows-latest
+        - macos-latest
   test:
     runs-on: "${{ matrix.os }}"
     steps:
