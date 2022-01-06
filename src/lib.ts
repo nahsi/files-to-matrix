@@ -103,6 +103,6 @@ export function run(
   core.debug(`files: ${inputFiles}`);
 
   const matrix = generateMatrix(inputMap, inputFiles);
-  core.info(JSON.stringify(matrix, null, 2));
+  core.info(`Generated matrix:\n${JSON.stringify(matrix, null, 2)}`);
   core.setOutput("matrix", JSON.stringify(matrix));
 }

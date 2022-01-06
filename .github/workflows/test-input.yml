@@ -10,13 +10,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          files: >
+          files: >-
             src/*
             .github/**
             ./some/dir/metadata.yml some/dir/metadata.yml
             some/dir/config.json
             /other/path/metadata.yml
-          map: |
+          map: >-
             [
               {
                 "name": "foo",
