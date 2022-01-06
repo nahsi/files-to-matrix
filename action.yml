@@ -15,8 +15,6 @@ outputs:
 
 runs:
   using: "composite"
-  env:
-    IMPORT_MAP: "${{ github.action_path }}/import_map.json"
   steps:
     - name: "Setup deno"
       uses: denoland/setup-deno@v1
@@ -25,6 +23,8 @@ runs:
 
     - name: "Setup cache action"
       uses: actions/cache@v2
+      env:
+        IMPORT_MAP: "${{ github.action_path }}/import_map.json"
       with:
         path: "~/.deno"
         key: "${{ runner.os }}-deno-files-to-matrix-${{ hashFiles(env.IMPORT_MAP) }}"
