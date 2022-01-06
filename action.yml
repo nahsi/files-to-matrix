@@ -38,4 +38,4 @@ runs:
       run: |
         deno run --quiet --unstable --import-map import_map.json \
           --allow-env --allow-read --allow-all \
-          src/main.ts
+          main.ts

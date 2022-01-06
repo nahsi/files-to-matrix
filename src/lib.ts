@@ -4,7 +4,7 @@ import { walkSync } from "fs";
 import { normalize } from "path";
 import { globToRegExp, isGlob } from "glob";
 
-interface ActionInterface {
+export interface ActionInterface {
   map: string;
   files: string;
 }
@@ -88,7 +88,7 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
   return matrix;
 }
 
-function run(
+export function run(
   configuration: ActionInterface,
 ) {
   const settings: ActionInterface = { ...configuration };
@@ -103,10 +103,3 @@ function run(
   core.notice(JSON.stringify(matrix));
   core.setOutput("matrix", JSON.stringify(matrix));
 }
-
-const action: ActionInterface = {
-  map: core.getInput("map", { required: true }),
-  files: core.getInput("files", { required: true }),
-};
-
-run(action);
