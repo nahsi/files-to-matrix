@@ -25,9 +25,10 @@ runs:
       uses: actions/cache@v2
       with:
         path: "~/.deno"
-        key: "${{ runner.os }}-deno-${{ hashFiles('import_map.json') }}"
+        key: "${{ runner.os }}-deno-${{ hashFiles('$GITHUB_ACTION_PATH/import_map.json') }}"
         restore-keys: |
-          ${{ runner.os }}-deno-${{ hashFiles('import_map.json') }}
+          ${{ runner.os }}-deno-files-to-matrix-${{ hashFiles('$GITHUB_ACTION_PATH/import_map.json') }}
+          ${{ runner.os }}-deno-files-to-matrix-
           ${{ runner.os }}-deno-
 
     - name: "Run action with deno"
@@ -36,6 +37,7 @@ runs:
         INPUT_FILES: ${{ inputs.files }}
         INPUT_MAP: ${{ inputs.map }}
       run: |
-        deno run --quiet --unstable --import-map import_map.json \
+        deno run --quiet --unstable \
+          --import-map $GITHUB_ACTION_PATH/import_map.json \
           --allow-env --allow-read \
           main.ts
