@@ -15,6 +15,8 @@ outputs:
 
 runs:
   using: "composite"
+  env:
+    IMPORT_MAP: "${{ github.action_path }}/import_map.json"
   steps:
     - name: "Setup deno"
       uses: denoland/setup-deno@v1
@@ -25,9 +27,9 @@ runs:
       uses: actions/cache@v2
       with:
         path: "~/.deno"
-        key: "${{ runner.os }}-deno-${{ hashFiles('$GITHUB_ACTION_PATH/import_map.json') }}"
+        key: "${{ runner.os }}-deno-files-to-matrix-${{ hashFiles(env.IMPORT_MAP) }}"
         restore-keys: |
-          ${{ runner.os }}-deno-files-to-matrix-${{ hashFiles('$GITHUB_ACTION_PATH/import_map.json') }}
+          ${{ runner.os }}-deno-files-to-matrix-${{ hashFiles(env.IMPORT_MAP) }}
           ${{ runner.os }}-deno-files-to-matrix-
           ${{ runner.os }}-deno-
 
@@ -40,4 +42,4 @@ runs:
         deno run --quiet --unstable \
           --import-map $GITHUB_ACTION_PATH/import_map.json \
           --allow-env --allow-read \
-          main.ts
+          $GITHUB_ACTION_PATH/main.ts
