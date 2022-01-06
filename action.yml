@@ -4,14 +4,14 @@ author: "Anatoly Laskaris"
 
 inputs:
   files:
-    description: "List of files to convert to matrix"
+    description: "List of files/paths/globs"
     required: true
-  map:
-    description: "Map of names to path levels"
+  settings:
+    description: "Settings for "
     required: true
 outputs:
   matrix:
-    description: "Matrix generated from files"
+    description: "Generated array to use with matrix"
 
 runs:
   using: "composite"
@@ -25,7 +25,7 @@ runs:
       shell: bash
       env:
         INPUT_FILES: ${{ inputs.files }}
-        INPUT_MAP: ${{ inputs.map }}
+        INPUT_SETTINGS: ${{ inputs.settings }}
       run: |
         deno run --quiet --unstable \
           --import-map $GITHUB_ACTION_PATH/import_map.json \

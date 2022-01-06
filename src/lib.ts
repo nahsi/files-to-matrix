@@ -5,12 +5,12 @@ import { normalize } from "path";
 import { globToRegExp, isGlob } from "glob";
 
 export interface ActionInterface {
-  map: string;
+  settings: string;
   files: string;
 }
 
 // deno-lint-ignore no-explicit-any
-interface LevelMapInterface extends Array<any> {
+interface LevelSettingsInterface extends Array<any> {
   name: string;
   level: number;
   trim: boolean;
@@ -52,7 +52,7 @@ export function pathToLevels(path: string) {
   return normalizedPath
 }
 
-function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
+function generateMatrix(settings: LevelSettingsInterface, paths: Array<string>) {
   const trimExtention = (s: string) => s.split(".").shift() || s;
 
   const matrix: Array<{ [key: string]: string }> = [];
@@ -67,9 +67,9 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
       pathToLevels(path).forEach((level: string, depth: number) => {
         // find settings for current level in "map" input
         // first found setting is used
-        const setting = map.find((e) => e.level == depth);
+        const setting = settings.find((e) => e.level == depth);
         if (setting) {
-          // if no "name" set const name be current depth
+          // if no "name" set let name be current depth
           const name = setting?.name || String(depth);
           const trim = setting?.trim || null;
           if (trim) {
@@ -79,8 +79,8 @@ function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
         }
       });
       const exists = matrix.find((e) =>
-        // javascript objects are are always unique
-        // so we convert objects to strings to compare
+        // javascript objects are always unique
+        // convert objects to strings before comparison
         JSON.stringify(e) == JSON.stringify(matrixElement)
       );
       if (!exists) {
@@ -96,13 +96,13 @@ export function run(
 ) {
   const settings: ActionInterface = { ...configuration };
 
-  const inputMap: LevelMapInterface = parseJson(settings.map);
-  core.debug(`map: ${JSON.stringify(inputMap)}`);
+  const inputSettings: LevelSettingsInterface = parseJson(settings.settings);
+  core.debug(`map: ${JSON.stringify(inputSettings)}`);
 
   const inputFiles = preparePaths(settings.files);
   core.debug(`files: ${inputFiles}`);
 
-  const matrix = generateMatrix(inputMap, inputFiles);
+  const matrix = generateMatrix(inputSettings, inputFiles);
   core.info(`Generated matrix:\n${JSON.stringify(matrix, null, 2)}`);
   core.setOutput("matrix", JSON.stringify(matrix));
 }
