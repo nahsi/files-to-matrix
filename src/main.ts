@@ -1,11 +1,8 @@
 import * as core from "@actions/core";
 
-import { walkSync } from "https://deno.land/std@0.120.0/fs/mod.ts";
-import { normalize } from "https://deno.land/std@0.120.0/path/mod.ts";
-import {
-  globToRegExp,
-  isGlob,
-} from "https://deno.land/std@0.120.0/path/glob.ts";
+import { walkSync } from "fs";
+import { normalize } from "path";
+import { globToRegExp, isGlob } from "glob";
 
 interface ActionInterface {
   map: string;
