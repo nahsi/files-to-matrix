@@ -30,6 +30,7 @@ export function preparePaths(rawPaths: string) {
     if (isGlob(path)) {
       const regexp = globToRegExp(path, { extended: true, globstar: true });
       for (const file of walkSync(".", { match: [regexp] })) {
+        core.debug(`expand: ${path} -> ${file.path}`)
         expandedPaths.push(file.path);
       }
     } else {
@@ -43,10 +44,12 @@ export function pathToLevels(path: string) {
   const withoutDot = (s: string) => s !== ".";
   const withoutEmpty = (s: string) => s.length > 0;
 
-  return normalize(path)
+  const normalizedPath = normalize(path)
     .split("/")
     .filter(withoutDot)
     .filter(withoutEmpty);
+  core.debug(`levels: ${path} -> ${normalizedPath}`)
+  return normalizedPath
 }
 
 function generateMatrix(map: LevelMapInterface, paths: Array<string>) {
@@ -94,12 +97,12 @@ export function run(
   const settings: ActionInterface = { ...configuration };
 
   const inputMap: LevelMapInterface = parseJson(settings.map);
-  core.debug(JSON.stringify(inputMap));
+  core.debug(`map: ${JSON.stringify(inputMap)}`);
 
   const inputFiles = preparePaths(settings.files);
-  core.debug(String(inputFiles));
+  core.debug(`files: ${inputFiles}`);
 
   const matrix = generateMatrix(inputMap, inputFiles);
-  core.notice(JSON.stringify(matrix));
+  core.info(JSON.stringify(matrix, null, 2));
   core.setOutput("matrix", JSON.stringify(matrix));
 }

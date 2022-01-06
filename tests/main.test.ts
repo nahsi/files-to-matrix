@@ -1,7 +1,7 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import { pathToLevels, preparePaths } from "../src/lib.ts";
 
-Deno.test("test pathToLevels", () => {
+Deno.test("pathToLevels", () => {
   const result = ["some", "path"];
 
   const absolutePath = pathToLevels("/some/path");
@@ -11,7 +11,7 @@ Deno.test("test pathToLevels", () => {
   assertEquals(complexPath, result);
 });
 
-Deno.test("test preparePaths", () => {
+Deno.test("preparePaths", () => {
   const glob = preparePaths("tests/**");
   assertEquals(glob, ["tests/main.test.ts"]);
 });
