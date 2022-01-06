@@ -21,18 +21,6 @@ runs:
       with:
         deno-version: v1.x
 
-    - name: "Setup cache action"
-      uses: actions/cache@v2
-      env:
-        IMPORT_MAP: "${{ github.action_path }}/import_map.json"
-      with:
-        path: "~/.deno"
-        key: "${{ runner.os }}-deno-files-to-matrix-${{ hashFiles(env.IMPORT_MAP) }}"
-        restore-keys: |
-          ${{ runner.os }}-deno-files-to-matrix-${{ hashFiles(env.IMPORT_MAP) }}
-          ${{ runner.os }}-deno-files-to-matrix-
-          ${{ runner.os }}-deno-
-
     - name: "Run action with deno"
       shell: bash
       env:
