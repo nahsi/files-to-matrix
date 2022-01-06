@@ -1,6 +1,9 @@
 name: "Files to matrix"
-description: "Generate github action build matrix from a list of files"
+description: "Generate a build matrix from files/globs"
 author: "Anatoly Laskaris"
+branding:
+  icon: "file-plus"
+  color: "white"
 
 inputs:
   files:
