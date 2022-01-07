@@ -8,9 +8,9 @@ branding:
 inputs:
   files:
     description: "List of files/paths/globs"
-    required: true
+    default: ""
   settings:
-    description: "Settings for "
+    description: "Settings for levels"
     required: true
 outputs:
   matrix:
