@@ -25,6 +25,8 @@ function parseJson(input: string) {
 }
 
 export function preparePaths(rawPaths: string) {
+  if (!rawPaths) return []
+
   const expandedPaths: string[] = [];
   rawPaths.split(" ").forEach((path: string) => {
     if (isGlob(path)) {
@@ -54,6 +56,8 @@ export function pathToLevels(path: string) {
 
 function generateMatrix(settings: LevelSettingsInterface, paths: Array<string>) {
   const trimExtention = (s: string) => s.split(".").shift() || s;
+
+  if (!paths) return []
 
   const matrix: Array<{ [key: string]: string }> = [];
 
