@@ -8,13 +8,14 @@ branding:
 inputs:
   files:
     description: "List of files/paths/globs"
-    required: true
+    default: ""
   settings:
-    description: "Settings for "
+    description: "Settings for levels"
     required: true
 outputs:
   matrix:
     description: "Generated array to use with matrix"
+    value: "${{ steps.files-to-matrix.outputs.matrix }}"
 
 runs:
   using: "composite"
@@ -26,6 +27,7 @@ runs:
 
     - name: "Run action with deno"
       shell: bash
+      id: files-to-matrix
       env:
         INPUT_FILES: ${{ inputs.files }}
         INPUT_SETTINGS: ${{ inputs.settings }}

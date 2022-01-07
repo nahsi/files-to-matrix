@@ -18,7 +18,7 @@ Written in Typescript and runs with [Deno](https://deno.land).
 test-data/
 ├── some-dir
 ├── other-dir
-└── ignored-dir
+└── ignored
 ```
 
 ### Workflow
@@ -68,11 +68,11 @@ files: >-
 
 Json array of settings that will be used to generate matrix.
 
-| name    | type   | description           | required | default          |
-| ------- | ------ | --------------------- | -------- | ---------------- |
-| `level` | number | level/depth of path   | true     |                  |
-| `name`  | string | name of the level     |          | value of `level` |
-| `trim`  | bool   | remove file extention |          | false            |
+| name    | type   | required | default          | description           |
+| ------- | ------ | -------- | ---------------- | --------------------- |
+| `level` | number | true     |                  | level/depth of path   |
+| `name`  | string | false    | value of `level` | name of the level     |
+| `trim`  | bool   | false    | false            | remove file extention |
 
 If `level` settings is ommited it will be ignored, i.e. with input:
 
@@ -139,8 +139,6 @@ jobs:
       tf-matrix: "${{ steps.tf.outputs.matrix }}"
     steps:
       - uses: actions/checkpout@v2
-        with:
-          fetch-depth: 0
 
       - name: "Find changed terraform configs"
         id: changed-tf
@@ -150,9 +148,10 @@ jobs:
             terraform/**
 
       - uses: nahsi/files-to-matrix@v1
+        if: steps.changed-tf.outputs.any_changed_files
         id: tf
         with:
-          files: "${{ steps.changed-tf.outputs.all_modified_files }}"
+          files: "${{ steps.changed-tf.outputs.all_changed_files }}"
           settings: >-
             [
               {
@@ -163,11 +162,12 @@ jobs:
 
   run-terraform:
     runs-on: ubuntu-latest
+    if: needs.matrix.outputs.tf-matrix
     needs: matrix
     strategy:
       fail-fast: false
       matrix:
-        tf: "${{ needs.matrix.tf-matrix }}"
+        tf: "${{ fromJSON(needs.matrix.outputs.tf-matrix) }}"
 
     defaults:
       run:
@@ -219,8 +219,6 @@ jobs:
       ansible-matrix: "${{ steps.ansible.outputs.matrix }}"
     steps:
       - uses: actions/checkpout@v2
-        with:
-          fetch-depth: 0
 
       - name: "Find changed inventory files"
         id: changed-inventory
@@ -230,9 +228,10 @@ jobs:
             inventory/**
 
       - uses: nahsi/files-to-matrix@v1
+        if: steps.changed-inventory.outputs.any_changed
         id: ansible
         with:
-          files: "${{ steps.changed-inventory.outputs.all_modified_files }}"
+          files: "${{ steps.changed-inventory.outputs.all_changed_files }}"
           settings: >-
             [
               {
@@ -248,11 +247,12 @@ jobs:
 
   run-ansible:
     runs-on: ubuntu-latest
+    if: needs.matrix.outputs.ansible-matrix
     needs: matrix
     strategy:
       fail-fast: false
       matrix:
-        ansible: "${{ needs.matrix.ansible-matrix }}"
+        ansible: "${{ fromJSON(needs.matrix.outputs.ansible-matrix) }}"
 
     steps:
       - name: Checkout

@@ -25,6 +25,8 @@ function parseJson(input: string) {
 }
 
 export function preparePaths(rawPaths: string) {
+  if (!rawPaths) return null
+
   const expandedPaths: string[] = [];
   rawPaths.split(" ").forEach((path: string) => {
     if (isGlob(path)) {
@@ -102,7 +104,12 @@ export function run(
   const inputFiles = preparePaths(settings.files);
   core.debug(`files: ${inputFiles}`);
 
-  const matrix = generateMatrix(inputSettings, inputFiles);
-  core.info(`Generated matrix:\n${JSON.stringify(matrix, null, 2)}`);
-  core.setOutput("matrix", JSON.stringify(matrix));
+  if (!inputFiles) {
+    core.info("'files' input is empty. Setting matrix output to 'null'")
+    core.setOutput("matrix", null);
+  } else {
+    const matrix = generateMatrix(inputSettings, inputFiles);
+    core.info(`Generated matrix:\n${JSON.stringify(matrix, null, 2)}`);
+    core.setOutput("matrix", JSON.stringify(matrix));
+  }
 }
