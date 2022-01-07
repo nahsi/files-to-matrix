@@ -139,8 +139,6 @@ jobs:
       tf-matrix: "${{ steps.tf.outputs.matrix }}"
     steps:
       - uses: actions/checkpout@v2
-        with:
-          fetch-depth: 0
 
       - name: "Find changed terraform configs"
         id: changed-tf
@@ -150,9 +148,10 @@ jobs:
             terraform/**
 
       - uses: nahsi/files-to-matrix@v1
+        if: steps.changed-tf.outputs.any_changed_files
         id: tf
         with:
-          files: "${{ steps.changed-tf.outputs.all_modified_files }}"
+          files: "${{ steps.changed-tf.outputs.all_changed_files }}"
           settings: >-
             [
               {
@@ -163,11 +162,12 @@ jobs:
 
   run-terraform:
     runs-on: ubuntu-latest
+    if: needs.matrix.outputs.tf-matrix
     needs: matrix
     strategy:
       fail-fast: false
       matrix:
-        tf: "${{ fromJSON(needs.matrix.tf-matrix) }}"
+        tf: "${{ fromJSON(needs.matrix.outputs.tf-matrix) }}"
 
     defaults:
       run:
@@ -219,8 +219,6 @@ jobs:
       ansible-matrix: "${{ steps.ansible.outputs.matrix }}"
     steps:
       - uses: actions/checkpout@v2
-        with:
-          fetch-depth: 0
 
       - name: "Find changed inventory files"
         id: changed-inventory
@@ -230,9 +228,10 @@ jobs:
             inventory/**
 
       - uses: nahsi/files-to-matrix@v1
+        if: steps.changed-inventory.outputs.any_changed
         id: ansible
         with:
-          files: "${{ steps.changed-inventory.outputs.all_modified_files }}"
+          files: "${{ steps.changed-inventory.outputs.all_changed_files }}"
           settings: >-
             [
               {
@@ -248,11 +247,12 @@ jobs:
 
   run-ansible:
     runs-on: ubuntu-latest
+    if: needs.matrix.outputs.ansible-matrix
     needs: matrix
     strategy:
       fail-fast: false
       matrix:
-        ansible: "${{ fromJSON(needs.matrix.ansible-matrix) }}"
+        ansible: "${{ fromJSON(needs.matrix.outputs.ansible-matrix) }}"
 
     steps:
       - name: Checkout
