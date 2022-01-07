@@ -18,7 +18,7 @@ Written in Typescript and runs with [Deno](https://deno.land).
 test-data/
 ├── some-dir
 ├── other-dir
-└── ignored-dir
+└── ignored
 ```
 
 ### Workflow
@@ -68,11 +68,11 @@ files: >-
 
 Json array of settings that will be used to generate matrix.
 
-| name    | type   | description           | required | default          |
-| ------- | ------ | --------------------- | -------- | ---------------- |
-| `level` | number | level/depth of path   | true     |                  |
-| `name`  | string | name of the level     |          | value of `level` |
-| `trim`  | bool   | remove file extention |          | false            |
+| name    | type   | required | default          | description           |
+| ------- | ------ | -------- | ---------------- | --------------------- |
+| `level` | number | true     |                  | level/depth of path   |
+| `name`  | string | false    | value of `level` | name of the level     |
+| `trim`  | bool   | false    | false            | remove file extention |
 
 If `level` settings is ommited it will be ignored, i.e. with input:
 
@@ -167,7 +167,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tf: "${{ needs.matrix.tf-matrix }}"
+        tf: "${{ fromJSON(needs.matrix.tf-matrix) }}"
 
     defaults:
       run:
@@ -252,7 +252,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ansible: "${{ needs.matrix.ansible-matrix }}"
+        ansible: "${{ fromJSON(needs.matrix.ansible-matrix) }}"
 
     steps:
       - name: Checkout
